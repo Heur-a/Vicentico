@@ -1,0 +1,212 @@
+fileFormatVersion: 2
+guid: 35546988f5fab693db0638038bd3292a
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Casco.001
+    second: {fileID: 2100000, guid: 6a0d756a322b6805a8c2eaee67648c9a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lineas Brillantes Casco.001
+    second: {fileID: 2100000, guid: 0063f63f8659156d3ad3f1f20ac68218, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Perro.001
+    second: {fileID: 2100000, guid: 04facbb1b155b9cc3809fbd566b035cd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tabla y Mirilla Casco.001
+    second: {fileID: 2100000, guid: aea73b3561c76cf1fb38bb2ce28ce799, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_casco_BaseColor
+    second: {fileID: 2800000, guid: 92b8cf7b9a8cfa158885668322a29927, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_casco_Metallic
+    second: {fileID: 2800000, guid: b924f612f9c2aae0a9792040245617fb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_casco_Normal
+    second: {fileID: 2800000, guid: da39154ec6590cbb9897c6ba3d2430f9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_casco_Roughness
+    second: {fileID: 2800000, guid: 56667a7f806e3784ebe7b1084b1ab850, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_lineas casco brillantes_BaseColor
+    second: {fileID: 2800000, guid: e2b73d9cab7874e1284e2f5494b6c2d1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_lineas casco brillantes_Emissive
+    second: {fileID: 2800000, guid: 9c9647f4acd4c2d69946e2fb6562621c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_lineas casco brillantes_Metallic
+    second: {fileID: 2800000, guid: a9520fd23ff7db2219fd97eeed04d9e1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_lineas casco brillantes_Normal
+    second: {fileID: 2800000, guid: 26a6de2bb29d66b718601cb57d62eafa, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_lineas casco brillantes_Roughness
+    second: {fileID: 2800000, guid: a37f9c67947db2b33a92f886bb229c6b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_perro_BaseColor
+    second: {fileID: 2800000, guid: f73608f895c747ae58095abf0f9a6840, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_perro_Metallic
+    second: {fileID: 2800000, guid: 489a1988b7a9e41cfa91ab6112bf2472, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_perro_Normal
+    second: {fileID: 2800000, guid: 4cbaa922ea072b79690770154e21ca16, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_perro_Roughness
+    second: {fileID: 2800000, guid: e915f9693e47ca290a12148feb73b79f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_tabla y mirilla casco_BaseColor
+    second: {fileID: 2800000, guid: eaa9405918feef46f9885459e8b93a5b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_tabla y mirilla casco_Metallic
+    second: {fileID: 2800000, guid: e76b3c40083d2d79596bc6e2df72ab78, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_tabla y mirilla casco_Normal
+    second: {fileID: 2800000, guid: 23103de9bbf8c9f938c5904d0bc0ad28, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: perro_def_tabla y mirilla casco_Roughness
+    second: {fileID: 2800000, guid: 84756048421fc9ff0934be1619c76033, type: 3}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

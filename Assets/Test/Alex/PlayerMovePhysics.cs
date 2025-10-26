@@ -1,4 +1,5 @@
 using System.IO;
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
@@ -9,6 +10,7 @@ public class PlayerMovePhysics : MonoBehaviour
     public float linearSpeed = 5.0f;
     public float angularSpeed = 2.0f;
     public Rigidbody rb;
+    public Transform player;
     
     void Start()
     {
@@ -24,12 +26,13 @@ public class PlayerMovePhysics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float degs = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg;
+        player.eulerAngles = new Vector3(player.eulerAngles.x, degs, player.eulerAngles.z);
     }
 
     void FixedUpdate()
     {
-        rb.AddRelativeForce(movement.y * linearSpeed * Vector3.forward, ForceMode.Force );
-        rb.AddRelativeTorque(movement.x * angularSpeed * Vector3.up, ForceMode.Force );
+        rb.AddRelativeForce(linearSpeed * new Vector3(movement.x, 0, movement.y), ForceMode.Force);
+        // rb.AddRelativeTorque(movement.x * angularSpeed * Vector3.up);
     }
 }

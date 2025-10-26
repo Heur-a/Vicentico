@@ -21,8 +21,8 @@ public class EfectoMoverTextura : MonoBehaviour
         Debug.Log(delta);
 
         // Desplaça la textura en direcció contrària al moviment
-        textureOffset.x -= delta.x * scrollSpeed * Time.deltaTime;
-        textureOffset.y -= delta.z * scrollSpeed * Time.deltaTime;
+        textureOffset.x += delta.x * scrollSpeed ;
+        textureOffset.y += delta.z * scrollSpeed ;
 
         targetRenderer.material.mainTextureOffset = textureOffset;
 

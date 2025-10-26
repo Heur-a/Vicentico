@@ -576,6 +576,7 @@ MonoBehaviour:
   linearSpeed: 5
   angularSpeed: 2
   rb: {fileID: 1179308013123708214}
+  player: {fileID: 723207253924374029}
 --- !u!1 &8149747888794335250
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,6 +842,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRenderer: {fileID: 2219906958973497418}
   player: {fileID: 4829462537753021642}
-  renderedObject: {fileID: 104875486394470043}
-  linearScrollSpeed: 1
-  angularScrollSpeed: 1
+  scrollSpeed: 0.1

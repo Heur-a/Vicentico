@@ -25,7 +25,8 @@ public class PlayerMovePhysics : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        if (movement == Vector2.zero) return;
         float degs = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg;
         player.eulerAngles = new Vector3(player.eulerAngles.x, degs, player.eulerAngles.z);
     }

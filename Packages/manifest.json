@@ -1,16 +1,16 @@
 {
-    "scopedRegistries": [
-        {
-            "name": "spoiled",
-            "url": "https://registry.spoiledcat.com",
-            "scopes": [
-                "com.spoiledcat"
-            ]
-        }
-    ],
-    "dependencies": {
-    "com.ptc.vuforia.engine": "file:com.ptc.vuforia.engine-11.4.4.tgz",
+  "scopedRegistries": [
+    {
+      "name": "spoiled",
+      "url": "https://registry.spoiledcat.com",
+      "scopes": [
+        "com.spoiledcat"
+      ]
+    }
+  ],
+  "dependencies": {
     "com.meaf75.versionator": "https://github.com/meaf75/Versionator.git?path=/Packages/com.meaf75.versionator",
+    "com.ptc.vuforia.engine": "file:com.ptc.vuforia.engine-11.4.4.tgz",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ai.navigation": "2.0.9",
@@ -24,6 +24,7 @@
     "com.unity.test-framework": "1.6.0",
     "com.unity.timeline": "1.8.9",
     "com.unity.toolchain.linux-x86_64": "2.0.10",
+    "com.unity.toolchain.win-x86_64-linux-x86_64": "2.0.10",
     "com.unity.ugui": "2.0.0",
     "com.unity.visualscripting": "1.9.7",
     "com.unity.modules.accessibility": "1.0.0",

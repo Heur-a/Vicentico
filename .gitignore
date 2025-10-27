@@ -100,3 +100,7 @@ InitTestScene*.unity*
 
 # Rider shit
 /.idea
+
+# Vuforia
+/Packages/com.ptc.vuforia.engine-11.4.4.tgz
+

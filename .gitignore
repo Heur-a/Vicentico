@@ -106,7 +106,6 @@ InitTestScene*.unity*
 
 # Vuforia
 [Aa]ssets/Editor/Vuforia/Configuration/
-[Aa]ssets/StreamingAssets/vuforia/
 [Aa]ssets/Resources/vuforia/
 [Aa]ssets/SamplesResources/
 *.xml.meta  # Important per evitar commits de configuracions sensibles

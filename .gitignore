@@ -104,3 +104,9 @@ InitTestScene*.unity*
 # Vuforia
 /Packages/com.ptc.vuforia.engine-11.4.4.tgz
 
+# Vuforia
+[Aa]ssets/Editor/Vuforia/Configuration/
+[Aa]ssets/StreamingAssets/vuforia/
+[Aa]ssets/Resources/vuforia/
+[Aa]ssets/SamplesResources/
+*.xml.meta  # Important per evitar commits de configuracions sensibles

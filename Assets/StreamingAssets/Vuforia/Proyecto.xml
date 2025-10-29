@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig>
+  <Tracking>
+    <ImageTarget name="menu" size="1.000000 1.426000" />
+    <ImageTarget name="mundo" size="1.000000 1.404000" />
+    <ImageTarget name="vicentico" size="1.000000 1.682000" />
+    <ImageTarget name="planta_2" size="1.000000 1.490000" />
+    <ImageTarget name="planta_1" size="1.000000 1.589000" />
+  </Tracking>
+</QCARConfig>

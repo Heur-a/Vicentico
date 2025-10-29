@@ -5,7 +5,8 @@ public class MenuManager : MonoBehaviour
 {
     [Header("Referencias a los Canvas")]
     [SerializeField] private GameObject canvasNormal;
-    [SerializeField] private GameObject canvasInstrucciones;
+    [SerializeField] private GameObject tutorialVicentico; // Canvas Tutorial_vicentico (instrucciones)
+    [SerializeField] private GameObject pageTemplate; // Template de página dentro de Tutorial_vicentico
     [SerializeField] private GameObject canvasManipulacion; // Canvas de manipulación
     
     [Header("Referencias de Manipulación")]
@@ -13,10 +14,22 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject objetoFBX; // Objeto FBX a manipular
     [SerializeField] private Toggle toggleManipulacion; // Toggle opcional
     
+    [Header("Referencias de Video")]
+    [SerializeField] private VideoPlayerController videoPlayerController; // Script del reproductor de video
+    
     void Start()
     {
         // Estado inicial: Canvas normal visible, otros ocultos
-        MostrarCanvasNormal();
+        if (canvasNormal != null)
+            canvasNormal.SetActive(true);
+        
+        // Asegurarse de que Tutorial_vicentico esté oculto al inicio
+        if (tutorialVicentico != null)
+            tutorialVicentico.SetActive(false);
+            
+        // Asegurarse de que el page template esté oculto al inicio
+        if (pageTemplate != null)
+            pageTemplate.SetActive(false);
         
         // Asegurarse de que el canvas de manipulación esté cerrado al inicio
         if (canvasManipulacion != null)
@@ -27,18 +40,44 @@ public class MenuManager : MonoBehaviour
             objetoFBX.SetActive(false);
     }
     
-    // Llamado por el botón "Instrucciones" en el Canvas normal
+    // Llamado por el botón "Instrucciones" - Activa Tutorial_vicentico y Page_template
     public void MostrarInstrucciones()
     {
+        Debug.Log("=== BOTÓN INSTRUCCIONES PULSADO ===");
+        
+        // Ocultar el menú normal
         canvasNormal.SetActive(false);
-        canvasInstrucciones.SetActive(true);
+        Debug.Log("✅ Canvas Normal: FALSE");
+        
+        // Activar (checked) Tutorial_vicentico
+        tutorialVicentico.SetActive(true);
+        Debug.Log("✅ Tutorial_vicentico: TRUE (checked)");
+        
+        // Activar (checked) Page_template
+        pageTemplate.SetActive(true);
+        Debug.Log("✅ Page_template: TRUE (checked)");
+        
+        Debug.Log("=== FIN ===");
     }
     
-    // Llamado por la "X" (botón cerrar) en el Canvas de instrucciones
+    // Llamado por la "X" (botón cerrar) - Desactiva Tutorial_vicentico y Page_template
     public void MostrarCanvasNormal()
     {
-        canvasInstrucciones.SetActive(false);
+        Debug.Log("=== BOTÓN CERRAR PULSADO ===");
+        
+        // Desactivar Tutorial_vicentico
+        tutorialVicentico.SetActive(false);
+        Debug.Log("✅ Tutorial_vicentico: FALSE (unchecked)");
+        
+        // Desactivar Page_template
+        pageTemplate.SetActive(false);
+        Debug.Log("✅ Page_template: FALSE (unchecked)");
+        
+        // Mostrar el menú normal
         canvasNormal.SetActive(true);
+        Debug.Log("✅ Canvas Normal: TRUE");
+        
+        Debug.Log("=== FIN ===");
     }
     
     // Llamado por el botón "Escalar/Rotar" - Abre el canvas de manipulación
@@ -137,6 +176,22 @@ public class MenuManager : MonoBehaviour
         else
         {
             AbrirManipulacion();
+        }
+    }
+    
+    // Llamado por el botón "Video Intro"
+    public void AbrirVideoIntro()
+    {
+        Debug.Log("=== ABRIENDO VIDEO INTRO ===");
+        
+        if (videoPlayerController != null)
+        {
+            videoPlayerController.AbrirVideo();
+            Debug.Log("✅ Reproductor de video abierto");
+        }
+        else
+        {
+            Debug.LogError("❌ VideoPlayerController es NULL - ASÍGNALO EN EL INSPECTOR");
         }
     }
 }

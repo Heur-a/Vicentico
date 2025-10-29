@@ -17,7 +17,7 @@ public class TutorialPageContent
 }
 
 /*
- * Este es el script principal qu
+ * Este es el script principal que gestiona TODO el tutorial.
  */
 public class TutorialManager : MonoBehaviour
 {

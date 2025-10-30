@@ -230,6 +230,7 @@ public class MenuManager : MonoBehaviour
     // Llamado por el botón "Escalar/Rotar" - Abre el canvas de manipulación
     public void AbrirManipulacion()
     {
+        /*
         Debug.Log("=== ABRIENDO MANIPULACIÓN ===");
         
         // Ocultar el menú principal
@@ -285,6 +286,7 @@ public class MenuManager : MonoBehaviour
         }
             
         Debug.Log("=== FIN ABRIR MANIPULACIÓN ===");
+        */
     }
     
     // Llamado por el botón cerrar del canvas de manipulación

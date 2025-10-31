@@ -10,11 +10,12 @@ public class ResetPos : MonoBehaviour
     void Start()
     {
         _initalPos = target.localPosition;
-        _initalRot = target.localRotation;
+        _initalRot = target.rotation;
     }
 
     public void Reset()
     {
-        target.SetLocalPositionAndRotation(_initalPos,_initalRot);
+        target.localPosition = _initalPos;
+        target.rotation = _initalRot;
     }
 }

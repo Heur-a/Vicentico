@@ -10,12 +10,17 @@ public class PlanetHealthManager : MonoBehaviour
 
     [Header("Configuración de Animación")]
     [Tooltip("Velocidad de la animación. 0.5 = la barra tarda 2 segundos en vaciarse (1 / 0.5). 1 = tarda 1 segundo.")]
-    public float animationSpeed = 0.5f; // <-- NUEVA VARIABLE
+    public float animationSpeed = 0.5f;
+
+    [Header("Pantalla de Game Over")]
+    public GameObject gameOverScreen;
 
     // --- Variables Privadas para la Animación ---
-    private float targetFillAmount = 1f;   // <-- El valor al que QUEREMOS ir
-    private float currentFillAmount = 1f;  // <-- El valor VISUAL actual de la barra
-    
+    // (AQUÍ ESTABA EL ERROR: líneas duplicadas)
+    private float targetFillAmount = 1f;   // El valor al que QUEREMOS ir
+    private float currentFillAmount = 1f;  // El valor VISUAL actual de la barra
+    private bool isDead = false;           // Para controlar que la muerte solo ocurra una vez
+
     // --- Conexión con las Plantas ---
 
     void OnEnable()
@@ -34,8 +39,8 @@ public class PlanetHealthManager : MonoBehaviour
         UpdatePlanetHealthLogic();
         
         // Sincronizamos los valores iniciales sin animar
-        currentFillAmount = targetFillAmount; // <-- MODIFICADO
-        UpdateVisuals(currentFillAmount);     // <-- MODIFICADO
+        currentFillAmount = targetFillAmount;
+        UpdateVisuals(currentFillAmount);
     }
 
     // Esta función se ejecuta CADA VEZ que una planta cambia de estado
@@ -50,7 +55,7 @@ public class PlanetHealthManager : MonoBehaviour
     }
 
     // Esta función AHORA solo calcula la lógica, no actualiza la UI
-    private void UpdatePlanetHealthLogic() // <-- CAMBIADO de "UpdatePlanetHealth"
+    private void UpdatePlanetHealthLogic()
     {
         // 1. Encontrar todas las plantas
         Plant[] allPlants = FindObjectsOfType<Plant>();
@@ -73,37 +78,71 @@ public class PlanetHealthManager : MonoBehaviour
 
         // 3. ¡LA PARTE MÁS IMPORTANTE!
         //    En lugar de tocar la barra, solo guardamos el objetivo.
-        targetFillAmount = totalHealthValue; // <-- MODIFICADO
+        targetFillAmount = totalHealthValue;
 
-        // 4. Comprobar Game Over (la lógica sí es instantánea)
-        if (targetFillAmount < 0.01f)
+       // 4. Comprobar Game Over (¡Lógica actualizada!)
+        //    Solo comprobamos si la vida objetivo es 0 Y no estamos ya muertos
+        if (targetFillAmount < 0.01f && !isDead)
         {
-            Debug.Log("¡EL PLANETA HA MUERTO! (Game Over)");
-            // La barra seguirá animándose hasta el 0%
+            isDead = true; // <-- Marcamos que estamos muertos
+            // La pantalla aún no se muestra, esperamos a la animación
         }
     }
 
-
     // --- ¡LA MAGIA OCURRE AQUÍ! ---
 
-    // La función Update() se llama en cada fotograma
+// La función Update() se llama en cada fotograma
     void Update()
     {
-        // Si el valor visual actual (currentFillAmount)
-        // no es igual al valor objetivo (targetFillAmount)...
+        // 1. Animamos la barra si es necesario
         if (currentFillAmount != targetFillAmount)
         {
-            // ...movemos SUAVEMENTE el valor actual hacia el objetivo.
             currentFillAmount = Mathf.MoveTowards(
                 currentFillAmount,        // Desde
                 targetFillAmount,         // Hacia
                 animationSpeed * Time.deltaTime // A esta velocidad
             );
 
-            // Ahora, actualizamos la UI (barra y texto) con
-            // este valor "en movimiento".
+            // Actualizamos la UI (barra y texto) con este valor "en movimiento"
             UpdateVisuals(currentFillAmount);
         }
+
+        // 2. Comprobamos la condición de muerte (¡MOVIDO FUERA!)
+        //    Si el planeta está marcado como "muerto"
+        //    Y la animación de la barra HA TERMINADO (ha llegado a 0)
+        //    Usamos Mathf.Approximately para comparar floats de forma segura
+        if (isDead && Mathf.Approximately(currentFillAmount, targetFillAmount))
+        {
+            ShowDeathScreen();
+        }
+    }
+    // Esta función se encarga de mostrar la pantalla y pausar el juego
+    void ShowDeathScreen()
+    {
+        // Activar la pantalla de Game Over
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.SetActive(true);
+            
+            // Forzar que la imagen sea visible si tiene alpha bajo
+            UnityEngine.UI.Image image = gameOverScreen.GetComponent<UnityEngine.UI.Image>();
+            if (image != null && image.color.a < 0.1f)
+            {
+                Color newColor = image.color;
+                newColor.a = 1f;
+                image.color = newColor;
+            }
+            
+            // Forzar CanvasGroup si existe
+            CanvasGroup canvasGroup = gameOverScreen.GetComponent<CanvasGroup>();
+            if (canvasGroup != null && canvasGroup.alpha < 0.1f)
+            {
+                canvasGroup.alpha = 1f;
+            }
+        }
+
+        // Pausar el juego
+        Time.timeScale = 0f;
     }
 
     // Función separada para actualizar la barra y el texto

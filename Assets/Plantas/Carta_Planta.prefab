@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7879504792715233415}
   - component: {fileID: 3240835481539538435}
   - component: {fileID: 406364328717160887}
-  - component: {fileID: 6061037560229496954}
   m_Layer: 0
   m_Name: Carta_Planta
   m_TagString: Untagged
@@ -63,7 +62,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 6061037560229496954}
+  mPreview: {fileID: 0}
 --- !u!114 &3240835481539538435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,27 +160,6 @@ MonoBehaviour:
   growDust: {fileID: 104688444658304433}
   bloomBurst: {fileID: 6427814488552711189}
   maxDustRate: 35
-  overrideTargetScale: 0
-  targetScale: {x: 2, y: 2, z: 2}
---- !u!114 &6061037560229496954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 275480875872343702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mObserverBehaviour: {fileID: 7879504792715233415}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: planta_1
-  mDatasetName: Vuforia/Proyecto.xml
-  mCastedBehaviour: {fileID: 7879504792715233415}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!1 &3205784525970691025
 GameObject:
   m_ObjectHideFlags: 0

@@ -988,6 +988,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1682586639}
+    - targetCorrespondingSourceObject: {fileID: 2146722411813849417, guid: f13b5552f8aff25409c7ea676c4bea25,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1682586640}
   m_SourcePrefab: {fileID: 100100000, guid: f13b5552f8aff25409c7ea676c4bea25, type: 3}
 --- !u!114 &1669452657 stripped
 MonoBehaviour:
@@ -1020,6 +1024,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1682586639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682586634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mObserverBehaviour: {fileID: 1682586636}
+  mHiddenRoot: {fileID: 0}
+  mTargetName: menu
+  mDatasetName: Vuforia/Proyecto.xml
+  mCastedBehaviour: {fileID: 1682586636}
+  mMeshFilter: {fileID: 0}
+  mMeshRenderer: {fileID: 0}
+--- !u!114 &1682586640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1265,6 +1288,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Vicentico
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006764079801703282, guid: f4656da4e12728524ba970b0256cf964,
+        type: 3}
+      propertyPath: m_TagString
+      value: PersonajeBebedor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

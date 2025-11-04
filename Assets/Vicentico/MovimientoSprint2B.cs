@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,8 +7,13 @@ public class MovimientoSprint2B : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
     Camera _camMain;
-    private Vector3 _raycastHit;
+    private Vector3 _lastRaycastHit;
     public Transform player;
+    public float speed = 3f;
+    public float sensibilidadMovimiento = 0.2f;
+    public Transform marca;
+    private (bool hasHit, Vector3 pointWorldLocation) _locationRayCast;
+
     void Start()
     {
         _camMain = Camera.main;
@@ -17,11 +23,42 @@ public class MovimientoSprint2B : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var locationRayCast = GetLocationRayCast();
-        if (locationRayCast.hasHit)
+        if (_locationRayCast.hasHit)
         {
-            player.position = locationRayCast.pointWorldLocation;
+            //Ha llegado al punto
+            if (Mathf.Abs(_locationRayCast.pointWorldLocation.x - _lastRaycastHit.x) < sensibilidadMovimiento
+                &&
+                Mathf.Abs(_locationRayCast.pointWorldLocation.z - _lastRaycastHit.z) < sensibilidadMovimiento
+                ) return;
+            
+            _lastRaycastHit = _locationRayCast.pointWorldLocation;
+            
+            MoverPerro();
+            PonerMarca();
+            
         }
+    }
+
+    private void MoverPerro()
+    {
+        //TODO: Hacer que se mueva hacia al punto con velocidad
+            
+        //Sacar direccion movimiento y normalizar
+        Vector3 directionRaw = _lastRaycastHit - player.position;
+        Vector3 directionNormalized = directionRaw.normalized;
+            
+        //Mover perro 
+        player.Translate(speed * Time.deltaTime * directionNormalized, Space.World);
+    }
+
+    private void PonerMarca()
+    {
+        marca.position = _lastRaycastHit;
+    }
+
+    void FixedUpdate()
+    { 
+        _locationRayCast = GetLocationRayCast();
     }
 
     (bool hasHit, Vector3 pointWorldLocation) GetLocationRayCast()
@@ -39,5 +76,11 @@ public class MovimientoSprint2B : MonoBehaviour
         }
         
         return (hasHit, pointWorldLocation);
+    }
+
+    float CalculateExponentialSpeed(float speed, float reachTime)
+    {
+        //TODO: PONER EXPONENCIAL NEGATIVA
+        return Mathf.Pow(speed, 2) * reachTime;
     }
 }

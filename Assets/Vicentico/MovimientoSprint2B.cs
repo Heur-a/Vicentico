@@ -1,5 +1,3 @@
-using Unity.Collections;
-using UnityEditor;
 using UnityEngine;
 
 public class MovimientoSprint2B : MonoBehaviour
@@ -9,11 +7,12 @@ public class MovimientoSprint2B : MonoBehaviour
     Camera _camMain;
     private Vector3 _lastRaycastHit;
     public Transform player;
-    public float speed = 3f;
+    public float maxSpeed = 3f;
     public float sensibilidadMovimiento = 0.2f;
     public Transform marca;
     private (bool hasHit, Vector3 pointWorldLocation) _locationRayCast;
-
+    public float riseTime = 0.5f;
+    private float _timer;
     void Start()
     {
         _camMain = Camera.main;
@@ -23,31 +22,48 @@ public class MovimientoSprint2B : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ActualizarUltimoPunto();
+        
+        // Si hemos llegado resetear velocidad
+        ResetTimer();
+        //Calculamos la velocidad de este momento
+        float calculatedSpeed = CalculateExponentialSpeed(maxSpeed, riseTime);
+        Debug.Log("Velocidad perro = " + calculatedSpeed);
+        
+        // Movemos el perro y la marca
+        PonerMarca();
+        MoverPerro(calculatedSpeed);
+        Debug.Log("timer = " + _timer);
+        
+    }
+
+    private bool ActualizarUltimoPunto()
+    {
         if (_locationRayCast.hasHit)
         {
-            //Ha llegado al punto
+            //No movemos la cámara
             if (Mathf.Abs(_locationRayCast.pointWorldLocation.x - _lastRaycastHit.x) < sensibilidadMovimiento
                 &&
                 Mathf.Abs(_locationRayCast.pointWorldLocation.z - _lastRaycastHit.z) < sensibilidadMovimiento
-                ) return;
+               ) return true;
             
+            //Actualizar ultimo punto
             _lastRaycastHit = _locationRayCast.pointWorldLocation;
-            
-            MoverPerro();
-            PonerMarca();
-            
         }
+
+        return false;
     }
 
-    private void MoverPerro()
+    private void MoverPerro(float speed)
     {
         //TODO: Hacer que se mueva hacia al punto con velocidad
             
         //Sacar direccion movimiento y normalizar
         Vector3 directionRaw = _lastRaycastHit - player.position;
         Vector3 directionNormalized = directionRaw.normalized;
-            
+        Debug.DrawRay(player.position, directionNormalized * speed, Color.red);
         //Mover perro 
+        Debug.Log("Direction =  " + directionNormalized);
         player.Translate(speed * Time.deltaTime * directionNormalized, Space.World);
     }
 
@@ -78,9 +94,26 @@ public class MovimientoSprint2B : MonoBehaviour
         return (hasHit, pointWorldLocation);
     }
 
-    float CalculateExponentialSpeed(float speed, float reachTime)
+    float CalculateExponentialSpeed(float maxDesiredSpeed, float reachTime)
+    {   
+       
+        float c = Mathf.Log(maxDesiredSpeed);
+        float exponent = -((reachTime * _timer) - c);
+        float speedMomentous = - Mathf.Exp(exponent) + maxDesiredSpeed;
+        _timer += Time.deltaTime;
+        return speedMomentous;
+        
+    }
+
+    void ResetTimer()
     {
-        //TODO: PONER EXPONENCIAL NEGATIVA
-        return Mathf.Pow(speed, 2) * reachTime;
+        if (Mathf.Abs(player.position.x - _lastRaycastHit.x) < sensibilidadMovimiento
+            &&
+            Mathf.Abs(player.position.z - _lastRaycastHit.z) < sensibilidadMovimiento
+           )
+        {
+            _timer = 0;
+            Debug.Log("Timer Resetted");
+        };
     }
 }

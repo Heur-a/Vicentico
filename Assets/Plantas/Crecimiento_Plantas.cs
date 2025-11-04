@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using Vuforia;
-using System.Collections;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -8,14 +8,17 @@ public class Crecimiento_Plantas : MonoBehaviour
 {
     [Header("Vuforia")]
     public ObserverBehaviour observer;
+    [Tooltip("Si está activo, la planta crece/encoge con el tracking. Desactívalo si la disparas desde SeedGrowController.")]
+    public bool autoOnTracking = true;
 
     [Header("Plant parts")]
     public Transform plantRoot;
-    public Transform plantMesh;
+    public Transform plantMesh;     // Debe ser el objeto que tiene el MeshRenderer (p.ej. SP_Plant06)
 
     [Header("Growth")]
     public float growDuration = 2f;
     public AnimationCurve growCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [Tooltip("Si está activo, solo escala el eje Y (X y Z permanecen en 1).")]
     public bool scaleOnlyY = true;
 
     [Header("Bloom / Floración (opcional)")]
@@ -31,11 +34,11 @@ public class Crecimiento_Plantas : MonoBehaviour
     public float volumeFadeOutTime = 0.35f;
 
     [Header("Partículas")]
-    public ParticleSystem growDust;    // FX_GrowDust
-    public ParticleSystem bloomBurst;  // FX_BloomBurst
-    public float maxDustRate = 35f;    // tope del “polvo” durante el crecimiento
+    public ParticleSystem growDust;
+    public ParticleSystem bloomBurst;
+    public float maxDustRate = 35f;
 
-    Vector3 originalScale;
+    // ---- Interno ----
     Coroutine routine;
     int bloomBlendshapeIndex = -1;
 
@@ -44,31 +47,59 @@ public class Crecimiento_Plantas : MonoBehaviour
         if (observer == null) observer = GetComponent<ObserverBehaviour>();
         if (plantMesh == null) plantMesh = transform;
 
-        originalScale = plantMesh.localScale;
+        // Estado inicial: oculta y a escala de arranque (0 ó Y=0)
+        plantMesh.localScale = StartScale();
+        plantMesh.gameObject.SetActive(false);
+        SetRenderersEnabled(false);
 
-        plantMesh.localScale = scaleOnlyY
-            ? new Vector3(originalScale.x, 0.001f, originalScale.z)
-            : Vector3.one * 0.001f;
+        if (growthVolume) growthVolume.weight = 0f;
 
-        if (observer != null)
-            observer.OnTargetStatusChanged += OnTargetStatusChanged;
-
-        if (growthVolume != null) growthVolume.weight = 0f;
-
-        if (bloomSMR != null && !string.IsNullOrEmpty(bloomBlendshapeName) && bloomSMR.sharedMesh != null)
+        if (bloomSMR && !string.IsNullOrEmpty(bloomBlendshapeName) && bloomSMR.sharedMesh != null)
             bloomBlendshapeIndex = bloomSMR.sharedMesh.GetBlendShapeIndex(bloomBlendshapeName);
 
-        // Asegurar partículas apagadas al inicio
-        if (growDust != null) { growDust.Clear(true); growDust.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); }
-        if (bloomBurst != null) { bloomBurst.Clear(true); }
+        if (growDust) { growDust.Clear(true); growDust.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); }
+        if (bloomBurst) bloomBurst.Clear(true);
+
+        if (observer != null && autoOnTracking)
+            observer.OnTargetStatusChanged += OnTargetStatusChanged;
     }
 
     void OnDestroy()
     {
-        if (observer != null)
+        if (observer != null && autoOnTracking)
             observer.OnTargetStatusChanged -= OnTargetStatusChanged;
     }
 
+    // ---------- API pública ----------
+    public void ResetHidden()
+    {
+        if (routine != null) StopCoroutine(routine);
+
+        plantMesh.localScale = StartScale();
+        plantMesh.gameObject.SetActive(false);
+        SetRenderersEnabled(false);
+
+        if (growthVolume) growthVolume.weight = 0f;
+
+        if (growDust)
+        {
+            var em = growDust.emission;
+            em.rateOverTime = 0f;
+            growDust.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        if (bloomSMR && bloomBlendshapeIndex >= 0)
+            bloomSMR.SetBlendShapeWeight(bloomBlendshapeIndex, 0f);
+    }
+
+    public void BeginGrowthNow()
+    {
+        if (routine != null) StopCoroutine(routine);
+        routine = StartCoroutine(GrowAndBloom());
+    }
+    // ----------------------------------
+
+    // Automático (solo si autoOnTracking = true)
     void OnTargetStatusChanged(ObserverBehaviour ob, TargetStatus status)
     {
         bool visible = status.Status == Status.TRACKED || status.Status == Status.EXTENDED_TRACKED;
@@ -79,8 +110,13 @@ public class Crecimiento_Plantas : MonoBehaviour
 
     IEnumerator GrowAndBloom()
     {
-        // Arrancar polvo
-        if (growDust != null)
+        // Mostrar y habilitar render
+        if (!plantMesh.gameObject.activeSelf) plantMesh.gameObject.SetActive(true);
+        SetRenderersEnabled(true);
+        yield return null; // deja procesar el activado un frame
+
+        // Polvo ON
+        if (growDust)
         {
             var em = growDust.emission;
             em.rateOverTime = 0f;
@@ -88,36 +124,37 @@ public class Crecimiento_Plantas : MonoBehaviour
         }
 
         float t = 0f;
+        Vector3 start = StartScale();
+        Vector3 end = EndScale();
+
         while (t < growDuration)
         {
             t += Time.deltaTime;
             float k = growCurve.Evaluate(Mathf.Clamp01(t / growDuration));
 
-            if (scaleOnlyY)
-                plantMesh.localScale = new Vector3(originalScale.x, Mathf.Lerp(0.001f, originalScale.y, k), originalScale.z);
-            else
-                plantMesh.localScale = Vector3.Lerp(Vector3.one * 0.001f, originalScale, k);
+            plantMesh.localScale = Vector3.Lerp(start, end, k);
 
-            if (growthVolume != null)
+            if (growthVolume)
                 growthVolume.weight = Mathf.Lerp(0f, volumeTargetWeight, k);
 
-            if (growDust != null)
+            if (growDust)
             {
                 var em = growDust.emission;
-                em.rateOverTime = Mathf.Lerp(0f, maxDustRate, k); // más polvo cuanto más crece
+                em.rateOverTime = Mathf.Lerp(0f, maxDustRate, k);
             }
 
             yield return null;
         }
 
-        plantMesh.localScale = originalScale;
-        if (growthVolume != null) growthVolume.weight = volumeTargetWeight;
+        plantMesh.localScale = end;
 
-        // Estallido de floración
-        if (bloomAnimator != null && !string.IsNullOrEmpty(bloomTrigger))
+        if (growthVolume) growthVolume.weight = volumeTargetWeight;
+
+        // Floración opcional
+        if (bloomAnimator && !string.IsNullOrEmpty(bloomTrigger))
             bloomAnimator.SetTrigger(bloomTrigger);
 
-        if (bloomSMR != null && bloomBlendshapeIndex >= 0)
+        if (bloomSMR && bloomBlendshapeIndex >= 0)
         {
             float b = 0f;
             while (b < bloomDuration)
@@ -130,16 +167,14 @@ public class Crecimiento_Plantas : MonoBehaviour
             bloomSMR.SetBlendShapeWeight(bloomBlendshapeIndex, 100f);
         }
 
-        if (growDust != null)
+        if (growDust)
         {
-            // Apaga el polvo suavemente
             var em = growDust.emission;
             em.rateOverTime = 0f;
             growDust.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
 
-        if (bloomBurst != null)
-            bloomBurst.Play(); // un burst y se apaga solo
+        if (bloomBurst) bloomBurst.Play();
     }
 
     IEnumerator Shrink()
@@ -147,11 +182,10 @@ public class Crecimiento_Plantas : MonoBehaviour
         float shrinkDuration = 0.3f;
         float t = 0f;
         Vector3 from = plantMesh.localScale;
-        Vector3 to = scaleOnlyY ? new Vector3(originalScale.x, 0.001f, originalScale.z) : Vector3.one * 0.001f;
-        float startWeight = growthVolume != null ? growthVolume.weight : 0f;
+        Vector3 to = StartScale();
+        float startWeight = growthVolume ? growthVolume.weight : 0f;
 
-        // Cortar partículas al perder tracking
-        if (growDust != null)
+        if (growDust)
         {
             var em = growDust.emission;
             em.rateOverTime = 0f;
@@ -164,7 +198,7 @@ public class Crecimiento_Plantas : MonoBehaviour
             float k = Mathf.Clamp01(t / shrinkDuration);
             plantMesh.localScale = Vector3.Lerp(from, to, k);
 
-            if (growthVolume != null)
+            if (growthVolume)
             {
                 float f = Mathf.Clamp01(t / Mathf.Max(0.0001f, volumeFadeOutTime));
                 growthVolume.weight = Mathf.Lerp(startWeight, 0f, f);
@@ -173,9 +207,22 @@ public class Crecimiento_Plantas : MonoBehaviour
         }
 
         plantMesh.localScale = to;
-        if (growthVolume != null) growthVolume.weight = 0f;
 
-        if (bloomSMR != null && bloomBlendshapeIndex >= 0)
-            bloomSMR.SetBlendShapeWeight(bloomBlendshapeIndex, 0f);
+        if (growthVolume) growthVolume.weight = 0f;
+        if (bloomSMR && bloomBlendshapeIndex >= 0) bloomSMR.SetBlendShapeWeight(bloomBlendshapeIndex, 0f);
+
+        plantMesh.gameObject.SetActive(false);
+        SetRenderersEnabled(false);
+    }
+
+    // ------- Helpers -------
+    Vector3 StartScale() => scaleOnlyY ? new Vector3(1f, 0f, 1f) : Vector3.zero;
+    Vector3 EndScale() => Vector3.one;
+
+    void SetRenderersEnabled(bool enabled)
+    {
+        if (!plantMesh) return;
+        foreach (var r in plantMesh.GetComponentsInChildren<Renderer>(true))
+            r.enabled = enabled;
     }
 }

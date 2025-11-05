@@ -65,6 +65,9 @@ public class MovimientoSprint2B : MonoBehaviour
         //Mover perro 
         Debug.Log("Direction =  " + directionNormalized);
         player.Translate(speed * Time.deltaTime * directionNormalized, Space.World);
+        //Alinear perro
+        float degs = Mathf.Atan2(directionNormalized.x, directionNormalized.y) * Mathf.Rad2Deg;
+        player.eulerAngles = new Vector3(player.eulerAngles.x, degs, player.eulerAngles.z);
     }
 
     private void PonerMarca()

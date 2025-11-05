@@ -28,12 +28,10 @@ public class MovimientoSprint2B : MonoBehaviour
         ResetTimer();
         //Calculamos la velocidad de este momento
         float calculatedSpeed = CalculateExponentialSpeed(maxSpeed, riseTime);
-        Debug.Log("Velocidad perro = " + calculatedSpeed);
         
         // Movemos el perro y la marca
         PonerMarca();
         MoverPerro(calculatedSpeed);
-        Debug.Log("timer = " + _timer);
         
     }
 
@@ -62,8 +60,6 @@ public class MovimientoSprint2B : MonoBehaviour
         Vector3 directionRaw = _lastRaycastHit - player.position;
         Vector3 directionNormalized = directionRaw.normalized;
         Debug.DrawRay(player.position, directionNormalized * speed, Color.red);
-        //Mover perro 
-        Debug.Log("Direction =  " + directionNormalized);
         player.Translate(speed * Time.deltaTime * directionNormalized, Space.World);
         //Alinear perro
         float degs = Mathf.Atan2(directionNormalized.x, directionNormalized.y) * Mathf.Rad2Deg;
@@ -116,7 +112,6 @@ public class MovimientoSprint2B : MonoBehaviour
            )
         {
             _timer = 0;
-            Debug.Log("Timer Resetted");
         };
     }
 }

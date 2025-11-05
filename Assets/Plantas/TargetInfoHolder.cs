@@ -14,8 +14,10 @@ public class TargetInfoHolder
         }
         return _instance;
     }
+    
     private TargetInfoHolder()
     {
+        targetStatuses = new List<TargetStatus>();
     }
 
     public void AddTargetStatus(TargetStatus status)
@@ -28,6 +30,7 @@ public class TargetInfoHolder
         public Transform carta;
         public List<DistanciaCartas> distancias;
         public bool hasBeenActive = false;
+        public bool isCurrentlyTracked = false;
         public ImageTargetBehaviour imageTarget;
         public TipoCarta tipo;
 
@@ -36,8 +39,8 @@ public class TargetInfoHolder
             this.imageTarget = imageTarget;
             this.tipo = tipo;
             carta = imageTarget.GetComponent<Transform>();
+            distancias = new List<DistanciaCartas>();
         }
-
 
         public List<DistanciaCartas> Distancias
         {
@@ -49,6 +52,12 @@ public class TargetInfoHolder
         {
             get => hasBeenActive;
             set => hasBeenActive = value;
+        }
+
+        public bool IsCurrentlyTracked
+        {
+            get => isCurrentlyTracked;
+            set => isCurrentlyTracked = value;
         }
 
         protected bool Equals(TargetStatus other)

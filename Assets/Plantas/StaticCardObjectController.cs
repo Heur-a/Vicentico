@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 using Vuforia;
 
@@ -18,10 +17,10 @@ public class StaticCardObjectController : MonoBehaviour
 
     // Diccionario para mantener referencia de los observers
     private Dictionary<ImageTargetBehaviour, TargetObserver> _targetObservers = new Dictionary<ImageTargetBehaviour, TargetObserver>();
-    private DistanceRayDrawer _rayDrawer;
     private bool _initializationComplete = false;
     
-    public List<float> distances = new List<float>();
+    // Lista para almacenar las líneas que se deben dibujar cada frame
+    private List<LineaRayo> _lineasADibujar = new List<LineaRayo>();
 
     void Start()
     {
@@ -48,8 +47,7 @@ public class StaticCardObjectController : MonoBehaviour
         var targetVicentico = new TargetInfoHolder.TargetStatus(cartaVicentico, TargetInfoHolder.TipoCarta.Vicentico);
         CardsInfoHolder.AddTargetStatus(targetVicentico);
         
-        // Inicializar el DistanceRayDrawer después de un frame para asegurar que todo está configurado
-        Invoke(nameof(InitializeRayDrawer), 0.1f);
+        _initializationComplete = true;
     }
 
     // Método para crear observers para cada target
@@ -63,15 +61,6 @@ public class StaticCardObjectController : MonoBehaviour
         _targetObservers[target] = observer;
     }
 
-    private void InitializeRayDrawer()
-    {
-        // Añadir el componente DistanceRayDrawer al mismo GameObject
-        _rayDrawer = gameObject.AddComponent<DistanceRayDrawer>();
-        _rayDrawer.Initialize(this, CardsInfoHolder, distanciaMinima, colorDistanciaBuena, colorDistanciaMala);
-        
-        _initializationComplete = true;
-    }
-
     void Update()
     {
         if (!_initializationComplete) return;
@@ -80,6 +69,9 @@ public class StaticCardObjectController : MonoBehaviour
         
         // Actualizar la visibilidad de los hijos basado en la distancia
         UpdateChildrenVisibilityBasedOnDistance();
+        
+        // Dibujar los rayos cada frame
+        DibujarRayos();
     }
     
     private void CalcularTodasLasDistancias()
@@ -112,22 +104,6 @@ public class StaticCardObjectController : MonoBehaviour
         }
     }
 
-    // Método para verificar el estado de los targets de tipo Planta
-    private void CheckPlantaTargetsStatus()
-    {
-        foreach (var targetStatus in CardsInfoHolder.targetStatuses)
-        {
-            if (targetStatus.tipo == TargetInfoHolder.TipoCarta.Planta)
-            {
-                if (targetStatus.HasBeenActive)
-                {
-                    // El target Planta ha sido visto por primera vez
-                    // Podemos realizar acciones adicionales aquí si es necesario
-                }
-            }
-        }
-    }
-
     // Método para actualizar la visibilidad de los hijos basado en la distancia
     private void UpdateChildrenVisibilityBasedOnDistance()
     {
@@ -146,7 +122,7 @@ public class StaticCardObjectController : MonoBehaviour
     {
         foreach (var distanciaCarta in targetStatus.Distancias)
         {
-            Debug.Log("Distancia carta + =" + distanciaCarta.distancia );
+            Debug.Log(distanciaCarta.distancia + "" +distanciaCarta.carta + "" + targetStatus.carta );
             // Si alguna distancia es menor que la mínima, no cumple los requisitos
             if (distanciaCarta.distancia <= distanciaMinima)
             {
@@ -167,7 +143,90 @@ public class StaticCardObjectController : MonoBehaviour
             }
         }
     }
-    
+
+    // Método principal para dibujar rayos
+    private void DibujarRayos()
+    {
+        // Limpiar la lista de líneas del frame anterior
+        _lineasADibujar.Clear();
+        
+        // Para cada target status que sea Planta y haya sido visto
+        foreach (var targetStatus in CardsInfoHolder.targetStatuses)
+        {
+            if (targetStatus.tipo == TargetInfoHolder.TipoCarta.Planta && targetStatus.HasBeenActive)
+            {
+                // Calcular y almacenar las líneas que deben dibujarse para este target
+                CalcularLineasParaTarget(targetStatus);
+            }
+        }
+        
+        // Dibujar todas las líneas almacenadas
+        foreach (var linea in _lineasADibujar)
+        {
+            Debug.DrawLine(linea.desde, linea.hasta, linea.color, Time.deltaTime, false);
+        }
+    }
+
+    // Calcular las líneas que deben dibujarse para un target específico
+    private void CalcularLineasParaTarget(TargetInfoHolder.TargetStatus targetStatus)
+    {
+        if (targetStatus.carta == null) return;
+        
+        Vector3 posicionInicial = targetStatus.carta.position;
+        
+        // Revisar todas las distancias calculadas para este target
+        foreach (var distanciaCarta in targetStatus.Distancias)
+        {
+            if (distanciaCarta.carta == null) continue;
+            
+            // Solo dibujar líneas hacia targets que también hayan sido vistos (si son plantas)
+            if (EsTargetVisibleParaRayos(distanciaCarta.carta))
+            {
+                Vector3 posicionFinal = distanciaCarta.carta.position;
+                Color colorLinea = distanciaCarta.distancia >= distanciaMinima ? colorDistanciaBuena : colorDistanciaMala;
+                
+                // Añadir la línea a la lista para dibujar
+                _lineasADibujar.Add(new LineaRayo(posicionInicial, posicionFinal, colorLinea));
+            }
+        }
+    }
+
+    // Verificar si un target es visible para dibujar rayos hacia él
+    private bool EsTargetVisibleParaRayos(Transform targetTransform)
+    {
+        // Buscar el TargetStatus correspondiente a este transform
+        foreach (var status in CardsInfoHolder.targetStatuses)
+        {
+            if (status.carta == targetTransform)
+            {
+                // Si es Vicentico, siempre es visible para rayos
+                if (status.tipo == TargetInfoHolder.TipoCarta.Vicentico)
+                    return true;
+                
+                // Si es Planta, solo es visible si ha sido vista
+                if (status.tipo == TargetInfoHolder.TipoCarta.Planta)
+                    return status.HasBeenActive;
+            }
+        }
+        
+        return false;
+    }
+
+    // Estructura para almacenar información de una línea a dibujar
+    private struct LineaRayo
+    {
+        public Vector3 desde;
+        public Vector3 hasta;
+        public Color color;
+        
+        public LineaRayo(Vector3 desde, Vector3 hasta, Color color)
+        {
+            this.desde = desde;
+            this.hasta = hasta;
+            this.color = color;
+        }
+    }
+
     void OnDestroy()
     {
         // Limpiar los observers cuando se destruya el objeto

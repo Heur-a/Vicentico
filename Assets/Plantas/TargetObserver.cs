@@ -41,9 +41,6 @@ public class TargetObserver : MonoBehaviour
                     targetStatus.HasBeenActive = true;
                     firstTimeTracked = false;
                     Debug.Log($"Target Planta detectado por primera vez! HasBeenActive = {targetStatus.HasBeenActive}");
-                    
-                    // Desactivar todos los hijos inicialmente
-                    SetAllChildrenActive(false);
                 }
             }
             
@@ -58,18 +55,7 @@ public class TargetObserver : MonoBehaviour
         
         UpdateStaticTargetStatus();
     }
-
-    private void SetAllChildrenActive(bool active)
-    {
-        if (targetStatus.carta != null)
-        {
-            foreach (Transform child in targetStatus.carta)
-            {
-                child.gameObject.SetActive(active);
-            }
-        }
-    }
-
+    
     private void UpdateStaticTargetStatus()
     {
         foreach (TargetInfoHolder.TargetStatus status in targetInfoHolder.targetStatuses)

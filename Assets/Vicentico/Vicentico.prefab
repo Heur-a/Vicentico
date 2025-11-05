@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2219249806095771146}
   - component: {fileID: 5158401617685008571}
   - component: {fileID: 1476061054007440344}
-  - component: {fileID: 1832698925191736594}
   - component: {fileID: 8490960987208770216}
   m_Layer: 0
   m_Name: Vicentico
@@ -129,20 +128,6 @@ MonoBehaviour:
   angularSpeed: 2
   rb: {fileID: 1179308013123708214}
   player: {fileID: 723207253924374029}
---- !u!114 &1832698925191736594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8006764079801703282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 650afa0549c8f234a8674f4c61ebda9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotSpeed: 0.4
-  scaleSpeed: 1
 --- !u!114 &8490960987208770216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +152,6 @@ GameObject:
   - component: {fileID: 723207253924374029}
   - component: {fileID: 6726765452625792154}
   - component: {fileID: 5511843107906643493}
-  - component: {fileID: 1233803613356049129}
   m_Layer: 0
   m_Name: AnimationBone
   m_TagString: Untagged
@@ -214,20 +198,6 @@ Animator:
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5511843107906643493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8842650212099783870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 650afa0549c8f234a8674f4c61ebda9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotSpeed: 0.4
-  scaleSpeed: 1
---- !u!114 &1233803613356049129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

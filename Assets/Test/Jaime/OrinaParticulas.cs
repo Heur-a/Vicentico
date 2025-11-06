@@ -11,10 +11,15 @@ public class OrinaParticulas : MonoBehaviour
 
     private Animator anim;
     private bool estaOrinando = false;
+    
+    public int currentFrame = 0;
+    public int fps = 24;
+    [SerializeField] private float seconds = 0;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+        chorro.Stop();
     }
 
     void Update()
@@ -22,22 +27,38 @@ public class OrinaParticulas : MonoBehaviour
         if (anim == null || chorro == null)
             return;
 
-        // Obtener el estado actual de la animación
-        AnimatorStateInfo estado = anim.GetCurrentAnimatorStateInfo(0);
-
         // Convertir el tiempo normalizado (0–1) a frame
-        int frameActual = Mathf.FloorToInt(estado.normalizedTime * estado.length * anim.runtimeAnimatorController.animationClips[0].frameRate);
-
+        if (estaOrinando)
+        {
+            currentFrame = ContadorFrames();
+        }
+        
         // Controlar el chorro según el frame
-        if (!estaOrinando && frameActual >= frameInicio && frameActual < frameFin)
+        if (estaOrinando && currentFrame >= frameInicio && currentFrame < frameFin)
         {
             chorro.Play();
             estaOrinando = true;
         }
-        else if (estaOrinando && frameActual >= frameFin)
+        else if (estaOrinando && currentFrame >= frameFin)
         {
             chorro.Stop();
             estaOrinando = false;
+            currentFrame = 0;
+            seconds = 0;
         }
+        
+        
+    }
+
+    public void empezarMear()
+    {
+        anim.SetTrigger("TriggerMear");
+        estaOrinando = true;
+    }
+
+    int ContadorFrames()
+    {
+        seconds += Time.deltaTime;
+        return Mathf.FloorToInt(seconds * fps) % (frameFin + 1);
     }
 }

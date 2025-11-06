@@ -18,9 +18,14 @@ public class WaterBowl : MonoBehaviour
     [Header("Configuración del Sonido")]
     [Tooltip("Componente AudioSource que contiene el clip de 'beber agua'")]
     public AudioSource drinkingSound;
+    
+    [Header("Mensajes")]
+    [Tooltip("¿Mostrar mensajes cuando el bowl está vacío?")]
+    public bool showMessages = true;
 
     private bool isDrinking = false;
     private Coroutine refillCoroutine; // Para guardar la referencia a la rutina de rellenado
+    private bool hasShownEmptyMessage = false; // Para no repetir el mensaje
 
     void Start()
     {
@@ -48,6 +53,7 @@ public class WaterBowl : MonoBehaviour
             {
                 // ...vaciar la barra poco a poco.
                 waterBar.value -= drainSpeed * Time.deltaTime;
+                hasShownEmptyMessage = false; // Resetear el flag mientras hay agua
             }
             else
             {
@@ -55,7 +61,20 @@ public class WaterBowl : MonoBehaviour
                 waterBar.value = 0;
                 isDrinking = false; // Ya no puede beber
                 drinkingSound.Stop(); // Parar el sonido
+                
+                // Mostrar mensaje de que el bowl está vacío
+                if (!hasShownEmptyMessage)
+                {
+                    ShowMessage("¡El bowl está vacío! Espera a que se rellene...", new Color(1f, 0.5f, 0f)); // Naranja
+                    hasShownEmptyMessage = true;
+                }
             }
+        }
+        
+        // Resetear el flag si el bowl se ha rellenado
+        if (waterBar.value >= 1f)
+        {
+            hasShownEmptyMessage = false;
         }
     }
 
@@ -80,6 +99,18 @@ public class WaterBowl : MonoBehaviour
             {
                 isDrinking = true;
                 drinkingSound.Play();
+                
+                // Notificar al personaje que está bebiendo
+                CharacterWatering character = other.GetComponent<CharacterWatering>();
+                if (character != null)
+                {
+                    character.StartDrinking();
+                }
+            }
+            else
+            {
+                // Si el bowl está vacío, avisar al personaje
+                ShowMessage("El bowl está vacío. Espera a que se rellene...", new Color(1f, 0.5f, 0f));
             }
         }
     }
@@ -96,6 +127,13 @@ public class WaterBowl : MonoBehaviour
             if (drinkingSound != null)
             {
                 drinkingSound.Stop();
+            }
+            
+            // Notificar al personaje que dejó de beber
+            CharacterWatering character = other.GetComponent<CharacterWatering>();
+            if (character != null)
+            {
+                character.StopDrinking();
             }
 
             // Empezar la rutina de rellenado
@@ -117,5 +155,19 @@ public class WaterBowl : MonoBehaviour
         // Asegurarse de que queda en 1 exacto
         waterBar.value = 1f;
         refillCoroutine = null; // Limpiar la referencia
+        
+        // Mostrar mensaje cuando el bowl se ha rellenado completamente
+        ShowMessage("¡Bowl rellenado! Ya puedes beber agua.", Color.cyan);
+    }
+    
+    // Método auxiliar para mostrar mensajes
+    void ShowMessage(string message, Color color)
+    {
+        if (!showMessages) return;
+        
+        if (MessageDisplay.Instance != null)
+        {
+            MessageDisplay.Instance.ShowMessage(message, -1f, color);
+        }
     }
 }

@@ -4934,6 +4934,7 @@ GameObject:
   - component: {fileID: 7481430247749966899}
   - component: {fileID: 4208074549634600985}
   - component: {fileID: 1437728956728712919}
+  - component: {fileID: 3218715383822406926}
   - component: {fileID: 8024084026657166786}
   - component: {fileID: 8212921169994380711}
   - component: {fileID: 4687520969849117636}
@@ -5041,6 +5042,28 @@ MonoBehaviour:
   growDust: {fileID: 7205807462499315012}
   bloomBurst: {fileID: 8954630806765096845}
   maxDustRate: 35
+--- !u!114 &3218715383822406926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517553865767482528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337086e93ba16a74caf90dfd4ddcc919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLevel: 3
+  plantRenderer: {fileID: 650923701924776891}
+  healthyColor: {r: 0, g: 1, b: 0, a: 1}
+  dyingColor: {r: 1, g: 0.6, b: 0, a: 1}
+  deadColor: {r: 1, g: 0, b: 0, a: 1}
+  useAutoLife: 1
+  totalLifeTime: 30
+  timeGreen: 15
+  timeRed: 7
+  shrinkDuration: 1.5
 --- !u!114 &8024084026657166786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10148,6 +10171,12 @@ PrefabInstance:
       addedObject: {fileID: 6867102240699415868}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebf0fd41e5046f74bb6d4ecc7b307de0, type: 3}
+--- !u!23 &650923701924776891 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6907718765095990397, guid: ebf0fd41e5046f74bb6d4ecc7b307de0,
+    type: 3}
+  m_PrefabInstance: {fileID: 6257098805272084422}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1820482794552570068 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5734781358564658962, guid: ebf0fd41e5046f74bb6d4ecc7b307de0,

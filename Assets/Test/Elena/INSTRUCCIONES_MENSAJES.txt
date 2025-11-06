@@ -1,0 +1,179 @@
+════════════════════════════════════════════════════════════════════════════
+   INSTRUCCIONES: SISTEMA DE MENSAJES EN PANTALLA
+════════════════════════════════════════════════════════════════════════════
+
+📋 RESUMEN:
+He agregado un sistema completo de mensajes en pantalla que muestra todas las 
+acciones del personaje: cuando bebe agua, cuando riega plantas, cuando no tiene 
+suficiente agua, etc.
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎯 PASO 1: CREAR EL OBJETO DE UI PARA LOS MENSAJES
+═══════════════════════════════════════════════════════════════════════════
+
+1. En la jerarquía, crea un objeto vacío:
+   Botón derecho → Create Empty → Nombre: "MessageSystem"
+
+2. Añade el script "MessageDisplay" a este objeto
+
+3. Ahora crea el texto donde se mostrarán los mensajes:
+   
+   A) Si ya tienes un Canvas en la escena:
+      - Botón derecho en el Canvas → UI → Text - TextMeshPro
+      - Nombre: "MessageText"
+   
+   B) Si no tienes Canvas:
+      - Botón derecho en la Jerarquía → UI → Text - TextMeshPro
+      - Unity creará automáticamente un Canvas
+      - Nombre al texto: "MessageText"
+
+4. Configura el texto "MessageText":
+   ┌─────────────────────────────────────────────────────────────┐
+   │ Transform:                                                   │
+   │   - Anchor: Top Center (arriba en el centro)                │
+   │   - Pos X: 0                                                 │
+   │   - Pos Y: -100 (100 píxeles desde arriba)                  │
+   │   - Width: 800                                               │
+   │   - Height: 100                                              │
+   │                                                               │
+   │ TextMeshPro:                                                 │
+   │   - Font Size: 24-36 (lo que prefieras)                     │
+   │   - Alignment: Center (horizontal y vertical)               │
+   │   - Color: Blanco (con alpha en 255)                        │
+   │   - Vertex Color: Blanco                                    │
+   │                                                               │
+   │ Opcional (para fondo):                                      │
+   │   - Añade componente: Image                                 │
+   │   - Color: Negro con alpha bajo (ej: RGBA 0,0,0,100)       │
+   └─────────────────────────────────────────────────────────────┘
+
+5. Arrastra "MessageText" al campo del script MessageDisplay:
+   - En MessageSystem → MessageDisplay → Message Text → Arrastra MessageText
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎮 PASO 2: CONFIGURAR EL COMPONENTE MessageDisplay
+═══════════════════════════════════════════════════════════════════════════
+
+En el objeto "MessageSystem", configura el script:
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ MessageDisplay:                                                      │
+│   ✓ Message Text: [MessageText] (el que creaste arriba)            │
+│   ✓ Default Message Duration: 2 segundos                           │
+│   ✓ Fade Speed: 2                                                   │
+│   ✓ Queue Messages: ✓ (activado para encolar mensajes)            │
+└─────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+✨ PASO 3: CONFIGURAR LOS COLORES DE MENSAJES EN EL PERSONAJE
+═══════════════════════════════════════════════════════════════════════════
+
+En tu personaje (el que tiene el tag "PersonajeBebedor" y el script 
+CharacterWatering), verás nuevos campos en el Inspector:
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ Mensajes en Pantalla:                                                │
+│   ✓ Show Messages: ✓ (activado)                                     │
+│   ✓ Message Color Info: Blanco (para info general)                 │
+│   ✓ Message Color Success: Verde (cuando riegas con éxito)         │
+│   ✓ Message Color Warning: Amarillo (advertencias)                 │
+│   ✓ Message Color Error: Rojo (errores)                            │
+└─────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+💧 PASO 4: ACTIVAR MENSAJES EN EL WATERBOWL (OPCIONAL)
+═══════════════════════════════════════════════════════════════════════════
+
+En el objeto "Bowl" (WaterBowl script):
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ Mensajes:                                                            │
+│   ✓ Show Messages: ✓ (activado)                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+📢 MENSAJES QUE VERÁS EN EL JUEGO:
+═══════════════════════════════════════════════════════════════════════════
+
+🟦 MENSAJES INFORMATIVOS (Blanco):
+   • "Bebiendo agua..."
+   • "Agua recogida: XX/100"
+
+🟩 MENSAJES DE ÉXITO (Verde):
+   • "¡Agua llena! 100/100"
+   • "¡PlantName regada! ¡Totalmente recuperada! | Agua: XX"
+   • "¡PlantName regada! Salud mejorada (1 → 2) | Agua: XX"
+
+🟨 MENSAJES DE ADVERTENCIA (Amarillo):
+   • "No tienes suficiente agua. Tienes: XX/30"
+   • "No hay plantas cerca que necesiten agua"
+   • "Espera un momento antes de regar de nuevo..."
+   • "El bowl está vacío. Espera a que se rellene..."
+
+🟦 MENSAJES DEL BOWL (Cyan):
+   • "¡Bowl rellenado! Ya puedes beber agua."
+
+═══════════════════════════════════════════════════════════════════════════
+
+🔧 PERSONALIZACIÓN:
+═══════════════════════════════════════════════════════════════════════════
+
+Puedes personalizar:
+
+1. DURACIÓN DE LOS MENSAJES:
+   MessageSystem → MessageDisplay → Default Message Duration
+
+2. VELOCIDAD DE FADE:
+   MessageSystem → MessageDisplay → Fade Speed
+
+3. ¿APILAR O SOBRESCRIBIR?
+   MessageSystem → MessageDisplay → Queue Messages
+   - Activado = Los mensajes se encolan (uno tras otro)
+   - Desactivado = Cada mensaje nuevo cancela el anterior
+
+4. COLORES:
+   En el personaje (CharacterWatering) puedes cambiar los colores de 
+   cada tipo de mensaje
+
+5. POSICIÓN Y ESTILO DEL TEXTO:
+   Edita el objeto "MessageText" en el Canvas
+
+═══════════════════════════════════════════════════════════════════════════
+
+🐛 SOLUCIÓN DE PROBLEMAS:
+═══════════════════════════════════════════════════════════════════════════
+
+❌ "No aparecen mensajes":
+   1. Verifica que MessageSystem existe en la escena
+   2. Verifica que MessageText está asignado en MessageDisplay
+   3. Verifica que "Show Messages" está activado en CharacterWatering
+   4. Mira la consola por si hay algún warning
+
+❌ "El texto no se ve":
+   1. Verifica que MessageText tiene alpha = 255
+   2. Verifica que el Canvas está en modo "Screen Space - Overlay"
+   3. Verifica que MessageText está delante de otros elementos
+
+❌ "Los mensajes se solapan":
+   1. Activa "Queue Messages" en MessageDisplay
+   2. O aumenta "Fade Speed" para que desaparezcan más rápido
+
+═══════════════════════════════════════════════════════════════════════════
+
+📝 NOTAS TÉCNICAS:
+═══════════════════════════════════════════════════════════════════════════
+
+• MessageDisplay usa un patrón Singleton, solo debe haber UNO en la escena
+• Los mensajes hacen fade in/out automático
+• El sistema es compatible con todas las funcionalidades existentes
+• No afecta al rendimiento (muy ligero)
+
+═══════════════════════════════════════════════════════════════════════════
+
+¡Disfruta de tu sistema de mensajes en pantalla! 🎮✨
+

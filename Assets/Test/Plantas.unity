@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &13519004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,7 +793,7 @@ MonoBehaviour:
   m_Script: {fileID: -1631628248, guid: 8a9a760f95896c34689febc965510927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1334489867
+--- !u!114 &1334489869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1654,6 +1654,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ImageTarget_Planta1
+      objectReference: {fileID: 0}
+    - target: {fileID: 406364328717160887, guid: 544a13fd88f81334c8572501cddc97ec,
+        type: 3}
+      propertyPath: observer
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 406364328717160887, guid: 544a13fd88f81334c8572501cddc97ec,
         type: 3}

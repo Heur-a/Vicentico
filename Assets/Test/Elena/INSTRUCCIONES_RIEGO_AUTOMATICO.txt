@@ -1,0 +1,277 @@
+════════════════════════════════════════════════════════════════════════════
+   INSTRUCCIONES: SISTEMA DE RIEGO AUTOMÁTICO POR COLLIDER
+════════════════════════════════════════════════════════════════════════════
+
+📋 RESUMEN:
+El sistema ahora riega automáticamente cuando el personaje se acerca a las 
+plantas. Cada planta tiene su propio cooldown independiente y su propio nivel 
+de salud que aumenta cuando la riegas.
+
+═══════════════════════════════════════════════════════════════════════════
+
+🌱 PASO 1: CONFIGURAR LAS PLANTAS CON COLLIDERS
+═══════════════════════════════════════════════════════════════════════════
+
+Para que el sistema funcione, cada planta DEBE tener un Collider configurado
+como Trigger:
+
+1. Selecciona cada objeto de planta en la jerarquía
+
+2. Asegúrate de que tiene uno de estos colliders:
+   - Box Collider
+   - Sphere Collider
+   - Capsule Collider
+
+3. IMPORTANTE: Marca el checkbox "Is Trigger" en el collider
+   ┌─────────────────────────────────────────────────┐
+   │ Box Collider (o Sphere/Capsule Collider)        │
+   │   ☑ Is Trigger  <-- ESTO ES CRÍTICO            │
+   │   Center: (ajusta según tu modelo)               │
+   │   Size: (ajusta para cubrir el área de riego)   │
+   └─────────────────────────────────────────────────┘
+
+4. Ajusta el tamaño del collider:
+   - Debe ser lo suficientemente grande para que el personaje pueda entrar
+   - Recomendado: un poco más grande que el modelo de la planta
+   - Ejemplo para Box Collider: Size X=1, Y=1, Z=1 (ajusta según necesites)
+
+5. Verifica que el script "Plant" esté en el MISMO objeto que tiene el collider
+   (O en su padre directo)
+
+═══════════════════════════════════════════════════════════════════════════
+
+🤖 PASO 2: CONFIGURAR EL PERSONAJE
+═══════════════════════════════════════════════════════════════════════════
+
+El personaje necesita un Rigidbody para que los triggers funcionen:
+
+1. Selecciona el personaje (el que tiene el tag "PersonajeBebedor")
+
+2. Asegúrate de que tiene estos componentes:
+   
+   A) Rigidbody:
+      ┌─────────────────────────────────────────────┐
+      │ Rigidbody                                    │
+      │   Mass: 1                                    │
+      │   ☑ Use Gravity (si tu juego usa gravedad) │
+      │   ☑ Is Kinematic (si mueves con script)    │
+      │   Constraints: (congela rotaciones si es    │
+      │                  necesario)                  │
+      └─────────────────────────────────────────────┘
+   
+   B) Collider del personaje:
+      - Debe tener su propio collider (Box, Capsule, etc.)
+      - NO debe estar marcado como Trigger
+      - Este collider es para que el personaje no atraviese cosas
+
+3. El script CharacterWatering ya está configurado:
+   ┌─────────────────────────────────────────────────┐
+   │ Character Watering:                              │
+   │   ✓ Automatic Watering: ✓ (activado)           │
+   │   ✓ Watering Cooldown: 2 segundos               │
+   └─────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+⚙️ CONFIGURACIÓN RECOMENDADA
+═══════════════════════════════════════════════════════════════════════════
+
+CharacterWatering (en el personaje):
+┌────────────────────────────────────────────────────────────────┐
+│ Configuración de Agua del Personaje:                           │
+│   • Max Water Capacity: 100                                    │
+│   • Current Water: 0                                           │
+│   • Water Gain Rate: 20 (por segundo al beber)                │
+│   • Water Per Plant: 30 (consume 30 de agua por riego)        │
+│                                                                 │
+│ Configuración de Riego:                                        │
+│   • ✓ Automatic Watering: ✓ ACTIVADO                          │
+│   • Watering Cooldown: 2 segundos (por planta)                │
+│                                                                 │
+│ Mensajes en Pantalla:                                          │
+│   • ✓ Show Messages: ✓ ACTIVADO                               │
+└────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎮 CÓMO FUNCIONA EL SISTEMA
+═══════════════════════════════════════════════════════════════════════════
+
+1. El personaje bebe agua del WaterBowl (al entrar en su zona)
+   └─> Gana agua automáticamente mientras está dentro
+
+2. El personaje se acerca a una planta (entra en su collider trigger)
+   └─> El sistema verifica:
+       • ¿Tiene suficiente agua? (30 unidades)
+       • ¿La planta necesita agua? (healthLevel < 3)
+       • ¿Ha pasado el cooldown? (2 segundos desde el último riego)
+
+3. Si todo está OK, riega automáticamente
+   └─> Consume 30 de agua
+   └─> La planta sube 1 nivel de salud (1→2, 2→3)
+   └─> Muestra mensaje en pantalla
+
+4. IMPORTANTE: Cada planta tiene su propio cooldown independiente
+   └─> Puedes regar Planta1, luego inmediatamente Planta2
+   └─> Pero debes esperar 2s para volver a regar Planta1
+
+═══════════════════════════════════════════════════════════════════════════
+
+📊 SISTEMA INDIVIDUAL DE SALUD POR PLANTA
+═══════════════════════════════════════════════════════════════════════════
+
+Cada planta es completamente independiente:
+
+┌─────────────────────────────────────────────────────────────────┐
+│ Planta1:                          Planta2:                      │
+│   Health Level: 1 (muriéndose)      Health Level: 3 (sana)     │
+│   Al regar: 1 → 2 ✓                 No necesita riego          │
+│                                                                 │
+│ Planta3:                                                        │
+│   Health Level: 2 (débil)                                      │
+│   Al regar: 2 → 3 ✓                                            │
+│   (¡Pero sigue perdiendo vida con el tiempo!)                  │
+└─────────────────────────────────────────────────────────────────┘
+
+RECUERDA: 
+• El ciclo de vida continúa incluso después de regar
+• Regar solo da un "boost" temporal de +1 nivel de salud
+• Si una planta está en nivel 2, al regarla sube a 3, pero con el 
+  tiempo volverá a bajar según su ciclo de vida
+
+═══════════════════════════════════════════════════════════════════════════
+
+💬 MENSAJES QUE VERÁS
+═══════════════════════════════════════════════════════════════════════════
+
+🟩 Éxito al regar:
+   "¡Planta1 regada! ¡Totalmente recuperada! | Agua: 70"
+   "¡Planta2 regada! Salud mejorada (1 → 2) | Agua: 40"
+
+🟨 Advertencias:
+   "No tienes suficiente agua. Tienes: 15/30"
+   "Planta1 ya está completamente sana."
+   "Espera 1.5s antes de regar Planta1 de nuevo"
+
+🟦 Información:
+   "Bebiendo agua..."
+   "Agua recogida: 80/100"
+
+═══════════════════════════════════════════════════════════════════════════
+
+🐛 SOLUCIÓN DE PROBLEMAS
+═══════════════════════════════════════════════════════════════════════════
+
+❌ "No riega cuando me acerco":
+   1. ¿La planta tiene un collider con "Is Trigger" activado?
+   2. ¿El personaje tiene un Rigidbody?
+   3. ¿"Automatic Watering" está activado en CharacterWatering?
+   4. ¿Tienes suficiente agua? (necesitas 30 unidades)
+   5. Mira la consola (F12) para ver los logs de debug
+
+❌ "Riega demasiado rápido/lento":
+   → Ajusta "Watering Cooldown" en CharacterWatering
+      • Más alto = más tiempo entre riegos
+      • Recomendado: 1-3 segundos
+
+❌ "No detecta la planta":
+   1. Verifica que el script Plant esté en el mismo objeto que el collider
+   2. O que el collider sea hijo del objeto que tiene Plant
+   3. Intenta mover el script Plant al objeto que tiene el collider
+
+❌ "Las plantas tienen la misma salud":
+   → Esto NO debería pasar. Cada planta es independiente.
+   → Si ocurre, verifica que cada planta sea un objeto diferente
+   → (No deben ser instancias que compartan el mismo estado)
+
+═══════════════════════════════════════════════════════════════════════════
+
+🔧 PERSONALIZACIÓN AVANZADA
+═══════════════════════════════════════════════════════════════════════════
+
+Puedes ajustar varios parámetros:
+
+1. CANTIDAD DE AGUA POR RIEGO:
+   CharacterWatering → Water Per Plant
+   • 30 = puede regar 3 veces con el tanque lleno
+   • 20 = puede regar 5 veces
+   • 50 = puede regar 2 veces
+
+2. COOLDOWN ENTRE RIEGOS:
+   CharacterWatering → Watering Cooldown
+   • 1s = rápido (puede re-regar enseguida)
+   • 2s = equilibrado ✓
+   • 5s = lento (debe esperar más)
+
+3. TAMAÑO DE LA ZONA DE RIEGO:
+   En cada planta → Collider → Size
+   • Más grande = riega desde más lejos
+   • Más pequeño = debe acercarse más
+
+4. DESACTIVAR RIEGO AUTOMÁTICO:
+   CharacterWatering → Automatic Watering → ✗ Desactivado
+   (Útil si quieres implementar un botón manual más adelante)
+
+═══════════════════════════════════════════════════════════════════════════
+
+📝 DEBUGGING
+═══════════════════════════════════════════════════════════════════════════
+
+Para ver qué está pasando en tiempo real:
+
+1. CONSOLA (F12 en Play Mode):
+   • "Detectada planta: PlantaX - Nivel: 2"
+   • "¡Regaste PlantaX! Agua restante: 70"
+
+2. INSPECTOR (mientras juegas):
+   • Selecciona el personaje
+   • Mira "Current Water" en CharacterWatering
+   • Ve cómo cambia en tiempo real
+
+3. GIZMOS (en Scene View):
+   • Selecciona el personaje en Play Mode
+   • Verás líneas cyan hacia plantas recién regadas
+   • (Solo aparecen 3 segundos después de regar)
+
+4. HIERARCHY:
+   • Selecciona cada planta
+   • Mira su "Health Level" en el script Plant
+   • Verifica que el color cambie (verde/naranja/rojo)
+
+═══════════════════════════════════════════════════════════════════════════
+
+✨ FLUJO COMPLETO DEL JUEGO
+═══════════════════════════════════════════════════════════════════════════
+
+1. El personaje empieza sin agua (Current Water = 0)
+   
+2. Va al Bowl → Entra en el trigger → Empieza a beber
+   └─> Mensaje: "Bebiendo agua..."
+   └─> El agua aumenta (20 unidades/segundo)
+   
+3. Sale del Bowl → Deja de beber
+   └─> Mensaje: "Agua recogida: 80/100"
+   
+4. Se acerca a Planta1 (nivel 1 - roja/muriéndose)
+   └─> Entra en el collider trigger
+   └─> Riego automático
+   └─> Mensaje: "¡Planta1 regada! Salud mejorada (1 → 2) | Agua: 50"
+   
+5. Inmediatamente se acerca a Planta2 (nivel 2 - naranja)
+   └─> Riego automático (no hay cooldown entre diferentes plantas)
+   └─> Mensaje: "¡Planta2 regada! ¡Totalmente recuperada! | Agua: 20"
+   
+6. Intenta volver a regar Planta1
+   └─> Mensaje: "Espera 1.5s antes de regar Planta1 de nuevo"
+   
+7. Le queda poca agua (20/100)
+   └─> Intenta regar Planta3
+   └─> Mensaje: "No tienes suficiente agua. Tienes: 20/30"
+   
+8. Vuelve al Bowl para recargar agua
+   └─> ¡El ciclo continúa!
+
+═══════════════════════════════════════════════════════════════════════════
+
+¡Tu sistema de riego automático está listo! 🌱💧
+

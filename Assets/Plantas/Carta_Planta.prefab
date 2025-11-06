@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7879504792715233415}
   - component: {fileID: 3240835481539538435}
   - component: {fileID: 406364328717160887}
+  - component: {fileID: 7933781892653205022}
   m_Layer: 0
   m_Name: Carta_Planta
   m_TagString: Untagged
@@ -160,6 +161,28 @@ MonoBehaviour:
   growDust: {fileID: 104688444658304433}
   bloomBurst: {fileID: 6427814488552711189}
   maxDustRate: 35
+--- !u!114 &7933781892653205022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275480875872343702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337086e93ba16a74caf90dfd4ddcc919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLevel: 3
+  plantRenderer: {fileID: 570904389454073976}
+  healthyColor: {r: 0, g: 1, b: 0, a: 1}
+  dyingColor: {r: 1, g: 0.6, b: 0, a: 1}
+  deadColor: {r: 1, g: 0, b: 0, a: 1}
+  useAutoLife: 1
+  totalLifeTime: 30
+  timeGreen: 15
+  timeRed: 7
+  shrinkDuration: 1.5
 --- !u!1 &3205784525970691025
 GameObject:
   m_ObjectHideFlags: 0
@@ -10100,6 +10123,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SP_Plant06
       objectReference: {fileID: 0}
+    - target: {fileID: 5384400550676650447, guid: aba00a3a9f0d5bc4cbd0b1bc12a3c58a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -10113,6 +10141,12 @@ PrefabInstance:
       addedObject: {fileID: 5587938399367601699}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aba00a3a9f0d5bc4cbd0b1bc12a3c58a, type: 3}
+--- !u!23 &570904389454073976 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5888957571486742554, guid: aba00a3a9f0d5bc4cbd0b1bc12a3c58a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6221024908597487714}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1704452311876692759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4752119395144139637, guid: aba00a3a9f0d5bc4cbd0b1bc12a3c58a,

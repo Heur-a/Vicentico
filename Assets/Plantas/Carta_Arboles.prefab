@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5866121208595967122}
   - component: {fileID: 4039909674099074593}
   - component: {fileID: 3286306962874330136}
+  - component: {fileID: 2624363143812202114}
   m_Layer: 0
   m_Name: Carta_Arboles
   m_TagString: Untagged
@@ -216,6 +217,28 @@ MonoBehaviour:
   onResetAll:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2624363143812202114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955074431650407885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337086e93ba16a74caf90dfd4ddcc919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLevel: 3
+  plantRenderer: {fileID: 9093187396864837098}
+  healthyColor: {r: 0, g: 1, b: 0, a: 1}
+  dyingColor: {r: 1, g: 0.6, b: 0, a: 1}
+  deadColor: {r: 1, g: 0, b: 0, a: 1}
+  useAutoLife: 1
+  totalLifeTime: 30
+  timeGreen: 15
+  timeRed: 7
+  shrinkDuration: 1.5
 --- !u!1 &1683526589217956245
 GameObject:
   m_ObjectHideFlags: 0
@@ -9987,7 +10010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3312817283416961231
 Transform:
   m_ObjectHideFlags: 0
@@ -10082,6 +10105,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SP_Plant07
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 71741600c6852d64782fe028d92ab198,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -10098,6 +10126,12 @@ PrefabInstance:
 --- !u!4 &7960764484215111301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 71741600c6852d64782fe028d92ab198,
+    type: 3}
+  m_PrefabInstance: {fileID: 7633856883120576878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &9093187396864837098 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 71741600c6852d64782fe028d92ab198,
     type: 3}
   m_PrefabInstance: {fileID: 7633856883120576878}
   m_PrefabAsset: {fileID: 0}

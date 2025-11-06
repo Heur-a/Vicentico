@@ -1225,7 +1225,7 @@ GameObject:
   - component: {fileID: 2059246124}
   - component: {fileID: 2059246126}
   m_Layer: 0
-  m_Name: ImageTarget
+  m_Name: Bebedero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

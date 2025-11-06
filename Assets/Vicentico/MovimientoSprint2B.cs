@@ -68,7 +68,7 @@ public class MovimientoSprint2B : MonoBehaviour
 
     private void PonerMarca()
     {
-        marca.position = _lastRaycastHit;
+        marca.position = _locationRayCast.pointWorldLocation;
     }
 
     void FixedUpdate()

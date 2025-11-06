@@ -4935,7 +4935,8 @@ GameObject:
   - component: {fileID: 4208074549634600985}
   - component: {fileID: 1437728956728712919}
   - component: {fileID: 8024084026657166786}
-  - component: {fileID: 2702479885113621602}
+  - component: {fileID: 8212921169994380711}
+  - component: {fileID: 4687520969849117636}
   m_Layer: 0
   m_Name: Carta_Arbol
   m_TagString: Untagged
@@ -4986,7 +4987,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 2702479885113621602}
+  mPreview: {fileID: 4687520969849117636}
 --- !u!114 &1437728956728712919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5084,7 +5085,26 @@ MonoBehaviour:
   OnTargetLost:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2702479885113621602
+--- !u!114 &8212921169994380711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517553865767482528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mObserverBehaviour: {fileID: 4208074549634600985}
+  mHiddenRoot: {fileID: 0}
+  mTargetName: planta_2
+  mDatasetName: Vuforia/Proyecto.xml
+  mCastedBehaviour: {fileID: 4208074549634600985}
+  mMeshFilter: {fileID: 0}
+  mMeshRenderer: {fileID: 0}
+--- !u!114 &4687520969849117636
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

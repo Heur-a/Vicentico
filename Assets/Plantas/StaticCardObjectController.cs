@@ -122,7 +122,6 @@ public class StaticCardObjectController : MonoBehaviour
     {
         foreach (var distanciaCarta in targetStatus.Distancias)
         {
-            Debug.Log(distanciaCarta.distancia + "" +distanciaCarta.carta + "" + targetStatus.carta );
             // Si alguna distancia es menor que la mínima, no cumple los requisitos
             if (distanciaCarta.distancia <= distanciaMinima)
             {

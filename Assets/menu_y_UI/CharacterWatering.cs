@@ -5,6 +5,9 @@ using System.Collections;
 // Este script debe ir en el personaje que tiene el tag "PersonajeBebedor"
 public class CharacterWatering : MonoBehaviour
 {
+    [Header("Animación de Mear")] 
+    public OrinaParticulas animacionMear;
+    
     [Header("Configuración de Agua del Personaje")]
     [Tooltip("Cantidad máxima de agua que puede cargar el personaje")]
     public float maxWaterCapacity = 100f;
@@ -151,6 +154,10 @@ public class CharacterWatering : MonoBehaviour
         // Curar la planta
         plant.Heal();
         
+        //Llamar animacion de mear
+        animacionMear.empezarMear();
+
+        
         // Actualizar el tiempo del último riego de esta planta específica
         if (plantWateringTimes.ContainsKey(plant))
         {
@@ -212,7 +219,7 @@ public class CharacterWatering : MonoBehaviour
         
         if (MessageDisplay.Instance != null)
         {
-            MessageDisplay.Instance.ShowMessage(message, -1f, color);
+            MessageDisplay.Instance.ShowMessage(message, 2, color);
         }
         else
         {

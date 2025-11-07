@@ -1,3 +1,4 @@
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 public class MovimientoSprint2B : MonoBehaviour
@@ -13,10 +14,12 @@ public class MovimientoSprint2B : MonoBehaviour
     private (bool hasHit, Vector3 pointWorldLocation) _locationRayCast;
     public float riseTime = 0.5f;
     private float _timer;
+    private LayerMask _mask;
     void Start()
     {
         _camMain = Camera.main;
         player.position = Vector3.zero;
+        _mask = LayerMask.GetMask("Terrain");
     }
 
     // Update is called once per frame
@@ -84,7 +87,7 @@ public class MovimientoSprint2B : MonoBehaviour
         bool hasHit = false;
         
         
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity,_mask))
         {
             pointWorldLocation = hit.point;
             hasHit = true;

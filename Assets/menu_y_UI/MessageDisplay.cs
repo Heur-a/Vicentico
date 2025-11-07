@@ -53,11 +53,11 @@ public class MessageDisplay : MonoBehaviour
     {
         if (messageText != null)
         {
-            // Empezar con el texto invisible
+            // Empezar con el mensaje apuntar Vicentico
             Color c = messageText.color;
-            c.a = 0f;
+            //c.a = 0f;
             messageText.color = c;
-            messageText.text = "";
+            messageText.text = "Apunta a la carta de Vicentico";
         }
     }
     
@@ -90,10 +90,8 @@ public class MessageDisplay : MonoBehaviour
             messageQueue.Enqueue(data);
             
             // Si no está mostrando ningún mensaje, empezar
-            if (!isShowingMessage)
-            {
                 ProcessNextMessage();
-            }
+            
         }
         else
         {

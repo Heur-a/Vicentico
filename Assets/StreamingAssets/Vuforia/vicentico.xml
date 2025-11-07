@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig>
+  <Tracking>
+    <ImageTarget name="carta_cuenco" size="2.000000 3.024000" />
+    <ImageTarget name="carta_planta3" size="2.000000 3.006000" />
+  </Tracking>
+</QCARConfig>

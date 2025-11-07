@@ -46,8 +46,6 @@ public class OrinaParticulas : MonoBehaviour
             currentFrame = 0;
             seconds = 0;
         }
-        
-        
     }
 
     public void empezarMear()
